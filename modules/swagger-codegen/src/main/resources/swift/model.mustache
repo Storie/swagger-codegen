@@ -34,7 +34,7 @@ public struct {{classname}}: JSONEncodable {
     public init() {}
 {{/unwrapRequired}}
 {{#unwrapRequired}}
-    public init({{#requiredVars}}{{^-first}}, {{/-first}}{{name}}: {{#isEnum}}{{datatypeWithEnum}}!{{/isEnum}}{{^isEnum}}{{datatype}}!{{/isEnum}}{{/requiredVars}}) {
+    public init({{#requiredVars}}{{^-first}}, {{/-first}}{{name}}: {{#isEnum}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{datatype}}{{/isEnum}}{{/requiredVars}}) {
         {{#requiredVars}}
         self.{{name}} = {{name}}
         {{/requiredVars}}
@@ -42,7 +42,7 @@ public struct {{classname}}: JSONEncodable {
 {{/unwrapRequired}}
 
     // MARK: JSONEncodable
-    func encodeToJSON() -> AnyObject {
+    public func encodeToJSON() -> AnyObject {
         var nillableDictionary = [String:AnyObject?](){{#vars}}{{#isNotContainer}}{{#isPrimitiveType}}{{^isEnum}}{{#isInteger}}
         nillableDictionary["{{baseName}}"] = self.{{name}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}.encodeToJSON(){{/isInteger}}{{#isLong}}
         nillableDictionary["{{baseName}}"] = self.{{name}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}.encodeToJSON(){{/isLong}}{{^isLong}}{{^isInteger}}

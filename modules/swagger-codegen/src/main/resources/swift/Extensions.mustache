@@ -8,31 +8,31 @@ import Alamofire{{#usePromiseKit}}
 import PromiseKit{{/usePromiseKit}}
 
 extension Bool: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return self }
+    public func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Float: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return self }
+    public func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Int: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return self }
+    public func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Int32: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return NSNumber(int: self) }
+    public func encodeToJSON() -> AnyObject { return NSNumber(int: self) }
 }
 
 extension Int64: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return NSNumber(longLong: self) }
+    public func encodeToJSON() -> AnyObject { return NSNumber(longLong: self) }
 }
 
 extension Double: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return self }
+    public func encodeToJSON() -> AnyObject { return self }
 }
 
 extension String: JSONEncodable {
-    func encodeToJSON() -> AnyObject { return self }
+    public func encodeToJSON() -> AnyObject { return self }
 }
 
 private func encodeIfPossible<T>(object: T) -> AnyObject {
@@ -44,13 +44,13 @@ private func encodeIfPossible<T>(object: T) -> AnyObject {
 }
 
 extension Array: JSONEncodable {
-    func encodeToJSON() -> AnyObject {
+    public func encodeToJSON() -> AnyObject {
         return self.map(encodeIfPossible)
     }
 }
 
 extension Dictionary: JSONEncodable {
-    func encodeToJSON() -> AnyObject {
+    public func encodeToJSON() -> AnyObject {
         var dictionary = [NSObject:AnyObject]()
         for (key, value) in self {
             dictionary[key as! NSObject] = encodeIfPossible(value)
@@ -67,7 +67,7 @@ private let dateFormatter: NSDateFormatter = {
 }()
 
 extension NSDate: JSONEncodable {
-    func encodeToJSON() -> AnyObject {
+    public func encodeToJSON() -> AnyObject {
         return dateFormatter.stringFromDate(self)
     }
 }
