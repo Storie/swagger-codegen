@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 {{#description}}
 
@@ -53,5 +54,29 @@ public struct {{classname}}: JSONEncodable {
         let dictionary: [String:AnyObject] = APIHelper.rejectNil(nillableDictionary) ?? [:]
         return dictionary
     }
-}{{/model}}
+}
+extension {{classname}}: JSONDecodable {
+
+  public init?(json: JSON?) {
+    {{#unwrapRequired}}
+    {{#requiredVars}}
+    guard let {{name}} = {{datatype}}.fromJSON(json?["{{name}}"]) else {
+      return nil
+    }
+    self.{{name}} = {{name}}
+    {{/requiredVars}}
+    {{/unwrapRequired}}
+
+    {{#optionalVars}}
+    self.{{name}} = {{datatype}}.fromJSON(json?["{{name}}"])
+    {{/optionalVars}}
+  }
+
+  public static func fromJSON(json: JSON?) -> {{classname}}? {
+    return {{classname}}(json: json)
+  }
+
+}
+
+{{/model}}
 {{/models}}

@@ -4,35 +4,78 @@
 // https://github.com/swagger-api/swagger-codegen
 //
 
-import Alamofire{{#usePromiseKit}}
-import PromiseKit{{/usePromiseKit}}
+import Alamofire
+import SwiftyJSON
 
 extension Bool: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return self }
+}
+
+extension Bool: JSONDecodable {
+    static func fromJSON(json: JSON?) -> Bool? {
+        return json?.bool
+    }
 }
 
 extension Float: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return self }
 }
 
+extension Float: JSONDecodable {
+    static func fromJSON(json: JSON?) -> Float? {
+        return json?.float
+    }
+}
+
 extension Int: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return self }
+}
+
+extension Int: JSONDecodable {
+    static func fromJSON(json: JSON?) -> Int? {
+        return json?.int
+    }
 }
 
 extension Int32: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return NSNumber(int: self) }
 }
 
+extension Int32: JSONDecodable {
+    static func fromJSON(json: JSON?) -> Int32? {
+        return json?.int32
+    }
+}
+
 extension Int64: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return NSNumber(longLong: self) }
 }
+
+extension Int64: JSONDecodable {
+    static func fromJSON(json: JSON?) -> Int64? {
+        return json?.int64
+    }
+}
+
 
 extension Double: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return self }
 }
 
+extension Double: JSONDecodable {
+    static func fromJSON(json: JSON?) -> Double? {
+        return json?.double
+    }
+}
+
 extension String: JSONEncodable {
     public func encodeToJSON() -> AnyObject { return self }
+}
+
+extension String: JSONDecodable {
+    static func fromJSON(json: JSON?) -> String? {
+        return json?.string
+    }
 }
 
 private func encodeIfPossible<T>(object: T) -> AnyObject {
@@ -49,6 +92,14 @@ extension Array: JSONEncodable {
     }
 }
 
+extension Array: JSONDecodable {}
+extension Array where Element : JSON {
+    static func fromJSON(json: JSON?) -> Array<JSON>? {
+        return json?.array
+    }
+}
+
+
 extension Dictionary: JSONEncodable {
     public func encodeToJSON() -> AnyObject {
         var dictionary = [NSObject:AnyObject]()
@@ -59,6 +110,13 @@ extension Dictionary: JSONEncodable {
     }
 }
 
+extension Dictionary : JSONDecodable {}
+
+extension Dictionary where Key: String, Value: JSON {
+    static func fromJSON(json: JSON?) -> Dictionary<String, JSON>? {
+        return json?.dictionary
+    }
+}
 
 private let dateFormatter: NSDateFormatter = {
     let dateFormatter = NSDateFormatter()
@@ -72,16 +130,11 @@ extension NSDate: JSONEncodable {
     }
 }
 
-{{#usePromiseKit}}extension RequestBuilder {
-    public func execute() -> Promise<Response<T>>  {
-        let deferred = Promise<Response<T>>.pendingPromise()
-        self.execute { (response: Response<T>?, error: ErrorType?) in
-            if let response = response {
-                deferred.fulfill(response)
-            } else {
-                deferred.reject(error!)
-            }
+extension NSDate : JSONDecodable {
+    static func fromJSON(json: JSON?) -> NSDate? {
+        guard let dateString = json?.string else {
+            return nil
         }
-        return deferred.promise
+        return dateFormatter.dateFromString(dateString)
     }
-}{{/usePromiseKit}}
+}
