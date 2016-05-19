@@ -12,7 +12,13 @@ extension Bool: JSONEncodable {
 }
 
 extension Bool: JSONDecodable {
-    static func fromJSON(json: JSON?) -> Bool? {
+    public init?(json: JSON?) {
+        guard let bool = Bool.fromJSON(json) else {
+            return nil
+        }
+        self = bool
+    }
+    public static func fromJSON(json: JSON?) -> Bool? {
         return json?.bool
     }
 }
@@ -22,7 +28,13 @@ extension Float: JSONEncodable {
 }
 
 extension Float: JSONDecodable {
-    static func fromJSON(json: JSON?) -> Float? {
+    public init?(json: JSON?) {
+        guard let float = Float.fromJSON(json) else {
+            return nil
+        }
+        self = float
+    }
+    public static func fromJSON(json: JSON?) -> Float? {
         return json?.float
     }
 }
@@ -32,7 +44,13 @@ extension Int: JSONEncodable {
 }
 
 extension Int: JSONDecodable {
-    static func fromJSON(json: JSON?) -> Int? {
+    public init?(json: JSON?) {
+        guard let int = Int.fromJSON(json) else {
+            return nil
+        }
+        self = int
+    }
+    public static func fromJSON(json: JSON?) -> Int? {
         return json?.int
     }
 }
@@ -42,7 +60,13 @@ extension Int32: JSONEncodable {
 }
 
 extension Int32: JSONDecodable {
-    static func fromJSON(json: JSON?) -> Int32? {
+    public init?(json: JSON?) {
+        guard let int32 = Int32.fromJSON(json) else {
+            return nil
+        }
+        self = int32
+    }
+    public static func fromJSON(json: JSON?) -> Int32? {
         return json?.int32
     }
 }
@@ -52,7 +76,13 @@ extension Int64: JSONEncodable {
 }
 
 extension Int64: JSONDecodable {
-    static func fromJSON(json: JSON?) -> Int64? {
+    public init?(json: JSON?) {
+        guard let int64 = Int64.fromJSON(json) else {
+            return nil
+        }
+        self = int64
+    }
+    public static func fromJSON(json: JSON?) -> Int64? {
         return json?.int64
     }
 }
@@ -63,7 +93,13 @@ extension Double: JSONEncodable {
 }
 
 extension Double: JSONDecodable {
-    static func fromJSON(json: JSON?) -> Double? {
+    public init?(json: JSON?) {
+        guard let double = Double.fromJSON(json) else {
+            return nil
+        }
+        self = double
+    }
+    public static func fromJSON(json: JSON?) -> Double? {
         return json?.double
     }
 }
@@ -73,7 +109,13 @@ extension String: JSONEncodable {
 }
 
 extension String: JSONDecodable {
-    static func fromJSON(json: JSON?) -> String? {
+    public init?(json: JSON?) {
+        guard let string = String.fromJSON(json) else {
+            return nil
+        }
+        self = string
+    }
+    public static func fromJSON(json: JSON?) -> String? {
         return json?.string
     }
 }
@@ -92,12 +134,13 @@ extension Array: JSONEncodable {
     }
 }
 
-extension Array: JSONDecodable {}
-extension Array where Element : JSON {
-    static func fromJSON(json: JSON?) -> Array<JSON>? {
-        return json?.array
-    }
-}
+//extension Array: JSONDecodable {}
+//
+//extension Array where Element : JSONDecodable {
+//    static func fromJSON(json: JSON?) -> [JSONDecodable]? {
+//        return json?.array
+//    }
+//}
 
 
 extension Dictionary: JSONEncodable {
@@ -110,13 +153,13 @@ extension Dictionary: JSONEncodable {
     }
 }
 
-extension Dictionary : JSONDecodable {}
-
-extension Dictionary where Key: String, Value: JSON {
-    static func fromJSON(json: JSON?) -> Dictionary<String, JSON>? {
-        return json?.dictionary
-    }
-}
+//extension Dictionary : JSONDecodable {}
+//
+//extension Dictionary where Key: String, Value: JSON {
+//    static func fromJSON(json: JSON?) -> Dictionary<String, JSON>? {
+//        return json?.dictionary
+//    }
+//}
 
 private let dateFormatter: NSDateFormatter = {
     let dateFormatter = NSDateFormatter()
@@ -130,7 +173,7 @@ extension NSDate: JSONEncodable {
     }
 }
 
-extension NSDate : JSONDecodable {
+extension NSDate {
     static func fromJSON(json: JSON?) -> NSDate? {
         guard let dateString = json?.string else {
             return nil
