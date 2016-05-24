@@ -13,6 +13,7 @@ protocol JSONEncodable {
 
 protocol JSONDecodable {
     static func fromJSON(json: JSON?) -> Self?
+    init?(json: JSON?)
 }
 
 public class Response<T> {
