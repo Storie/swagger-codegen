@@ -12,10 +12,10 @@ import SwiftyJSON
 {{#description}}
 
 /** {{description}} */{{/description}}
-public struct {{classname}}: JSONEncodable {
+internal struct {{classname}}: JSONEncodable {
 {{#vars}}
 {{#isEnum}}
-    public enum {{datatypeWithEnum}}: String { {{#allowableValues}}{{#values}}
+    internal enum {{datatypeWithEnum}}: String { {{#allowableValues}}{{#values}}
         case {{enum}} = "{{raw}}"{{/values}}{{/allowableValues}}
     }
 {{/isEnum}}
@@ -23,19 +23,19 @@ public struct {{classname}}: JSONEncodable {
 {{#vars}}
 {{#isEnum}}
     {{#description}}/** {{description}} */
-    {{/description}}public var {{name}}: {{{datatypeWithEnum}}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}
+    {{/description}}internal var {{name}}: {{{datatypeWithEnum}}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}
 {{/isEnum}}
 {{^isEnum}}
     {{#description}}/** {{description}} */
-    {{/description}}public var {{name}}: {{{datatype}}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}
+    {{/description}}internal var {{name}}: {{{datatype}}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}
 {{/isEnum}}
 {{/vars}}
 
 {{^unwrapRequired}}
-    public init() {}
+    internal init() {}
 {{/unwrapRequired}}
 {{#unwrapRequired}}
-    public init({{#requiredVars}}{{^-first}}, {{/-first}}{{name}}: {{#isEnum}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{datatype}}{{/isEnum}}{{/requiredVars}}) {
+    internal init({{#requiredVars}}{{^-first}}, {{/-first}}{{name}}: {{#isEnum}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{datatype}}{{/isEnum}}{{/requiredVars}}) {
         {{#requiredVars}}
         self.{{name}} = {{name}}
         {{/requiredVars}}
@@ -43,7 +43,7 @@ public struct {{classname}}: JSONEncodable {
 {{/unwrapRequired}}
 
     // MARK: JSONEncodable
-    public func encodeToJSON() -> AnyObject {
+    internal func encodeToJSON() -> AnyObject {
         var nillableDictionary = [String:AnyObject?](){{#vars}}{{#isNotContainer}}{{#isPrimitiveType}}{{^isEnum}}{{#isInteger}}
         nillableDictionary["{{baseName}}"] = self.{{name}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}.encodeToJSON(){{/isInteger}}{{#isLong}}
         nillableDictionary["{{baseName}}"] = self.{{name}}{{^unwrapRequired}}?{{/unwrapRequired}}{{#unwrapRequired}}{{^required}}?{{/required}}{{/unwrapRequired}}.encodeToJSON(){{/isLong}}{{^isLong}}{{^isInteger}}
@@ -57,7 +57,7 @@ public struct {{classname}}: JSONEncodable {
 }
 extension {{classname}}: JSONDecodable {
 
-  public init?(json: JSON?) {
+  internal init?(json: JSON?) {
     {{#unwrapRequired}}
     {{#requiredVars}}
     guard let {{name}} = {{datatype}}.fromJSON(json?["{{name}}"]) else {
@@ -72,7 +72,7 @@ extension {{classname}}: JSONDecodable {
     {{/optionalVars}}
   }
 
-  public static func fromJSON(json: JSON?) -> {{classname}}? {
+  internal static func fromJSON(json: JSON?) -> {{classname}}? {
     return {{classname}}(json: json)
   }
 

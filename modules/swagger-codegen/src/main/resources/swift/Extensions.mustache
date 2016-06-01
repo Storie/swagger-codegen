@@ -8,114 +8,114 @@ import Alamofire
 import SwiftyJSON
 
 extension Bool: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return self }
+    internal func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Bool: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let bool = Bool.fromJSON(json) else {
             return nil
         }
         self = bool
     }
-    public static func fromJSON(json: JSON?) -> Bool? {
+    internal static func fromJSON(json: JSON?) -> Bool? {
         return json?.bool
     }
 }
 
 extension Float: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return self }
+    internal func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Float: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let float = Float.fromJSON(json) else {
             return nil
         }
         self = float
     }
-    public static func fromJSON(json: JSON?) -> Float? {
+    internal static func fromJSON(json: JSON?) -> Float? {
         return json?.float
     }
 }
 
 extension Int: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return self }
+    internal func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Int: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let int = Int.fromJSON(json) else {
             return nil
         }
         self = int
     }
-    public static func fromJSON(json: JSON?) -> Int? {
+    internal static func fromJSON(json: JSON?) -> Int? {
         return json?.int
     }
 }
 
 extension Int32: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return NSNumber(int: self) }
+    internal func encodeToJSON() -> AnyObject { return NSNumber(int: self) }
 }
 
 extension Int32: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let int32 = Int32.fromJSON(json) else {
             return nil
         }
         self = int32
     }
-    public static func fromJSON(json: JSON?) -> Int32? {
+    internal static func fromJSON(json: JSON?) -> Int32? {
         return json?.int32
     }
 }
 
 extension Int64: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return NSNumber(longLong: self) }
+    internal func encodeToJSON() -> AnyObject { return NSNumber(longLong: self) }
 }
 
 extension Int64: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let int64 = Int64.fromJSON(json) else {
             return nil
         }
         self = int64
     }
-    public static func fromJSON(json: JSON?) -> Int64? {
+    internal static func fromJSON(json: JSON?) -> Int64? {
         return json?.int64
     }
 }
 
 
 extension Double: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return self }
+    internal func encodeToJSON() -> AnyObject { return self }
 }
 
 extension Double: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let double = Double.fromJSON(json) else {
             return nil
         }
         self = double
     }
-    public static func fromJSON(json: JSON?) -> Double? {
+    internal static func fromJSON(json: JSON?) -> Double? {
         return json?.double
     }
 }
 
 extension String: JSONEncodable {
-    public func encodeToJSON() -> AnyObject { return self }
+    internal func encodeToJSON() -> AnyObject { return self }
 }
 
 extension String: JSONDecodable {
-    public init?(json: JSON?) {
+    internal init?(json: JSON?) {
         guard let string = String.fromJSON(json) else {
             return nil
         }
         self = string
     }
-    public static func fromJSON(json: JSON?) -> String? {
+    internal static func fromJSON(json: JSON?) -> String? {
         return json?.string
     }
 }
@@ -129,7 +129,7 @@ private func encodeIfPossible<T>(object: T) -> AnyObject {
 }
 
 extension Array: JSONEncodable {
-    public func encodeToJSON() -> AnyObject {
+    internal func encodeToJSON() -> AnyObject {
         return self.map(encodeIfPossible)
     }
 }
@@ -144,7 +144,7 @@ extension Array: JSONEncodable {
 
 
 extension Dictionary: JSONEncodable {
-    public func encodeToJSON() -> AnyObject {
+    internal func encodeToJSON() -> AnyObject {
         var dictionary = [NSObject:AnyObject]()
         for (key, value) in self {
             dictionary[key as! NSObject] = encodeIfPossible(value)
@@ -168,7 +168,7 @@ private let dateFormatter: NSDateFormatter = {
 }()
 
 extension NSDate: JSONEncodable {
-    public func encodeToJSON() -> AnyObject {
+    internal func encodeToJSON() -> AnyObject {
         return dateFormatter.stringFromDate(self)
     }
 }
